@@ -3,7 +3,7 @@ import time
 from pprint import pprint
 import re
 from config import settings
-
+from datetime import date
 
 import threading
 
@@ -70,11 +70,12 @@ sshUsername = settings.SSH_USER
 sshPassword = settings.SSH_PASS
 sshServer = settings.SSH_HOST
 
+current_date = date.today()
 
 connection = ssh(sshServer, sshUsername, sshPassword)
 connection.open_shell()
 connection.send_shell('cd /var/www')
-connection.send_shell('ls -l')
+connection.send_shell('mysqldump -u username -p database_name > data-dump_'+str(current_date)+'.sql')
 #connection.send_shell('cmd3')
 time.sleep(10)
 print(strdata)    # print the last line of received data
@@ -83,3 +84,4 @@ print(fulldata)   # This contains the complete data received.
 print('==========================')
 connection.close_connection()
 #print(settings.SSH_HOST,settings.SSH_USER,settings.SSH_PASS,settings.SSH_PORT)
+
